@@ -1,0 +1,17 @@
+# Virtual environment
+venv/
+
+# Byte-compiled / optimized Python files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# IDE files
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+*.env

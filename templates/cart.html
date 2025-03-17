@@ -1,0 +1,132 @@
+
+{% extends 'main.html' %}
+{% load static %}
+
+    {% block content %}
+
+    <!-- ...:::: Start Breadcrumb Section:::... -->
+    <div class="breadcrumb-section breadcrumb-bg-color--golden">
+        <div class="breadcrumb-wrapper">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <h3 class="breadcrumb-title">Cart</h3>
+                        <div class="breadcrumb-nav breadcrumb-nav-color--black breadcrumb-nav-hover-color--golden">
+                            <nav aria-label="breadcrumb">
+                                <ul>
+                                    <li><a href="{% url 'index' %}">Home</a></li>
+                                    <li><a href="{% url 'shop' %}">Shop</a></li>
+                                    <li class="active" aria-current="page">Cart</li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> <!-- ...:::: End Breadcrumb Section:::... -->
+
+    {% if cartItems %}
+
+    <!-- ...:::: Start Cart Section:::... -->
+    <div class="cart-section">
+        <!-- Start Cart Table -->
+        <div class="cart-table-wrapper" data-aos="fade-up" data-aos-delay="0">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="table_desc">
+                            <div class="table_page table-responsive">
+                                <table>
+                                    <!-- Start Cart Table Head -->
+                                    <thead>
+                                        <tr>
+                                            <th class="product_remove">Delete</th>
+                                            <th class="product_thumb">Image</th>
+                                            <th class="product_name">Product</th>
+                                            <th class="product-price">Price</th>
+                                            <th class="product_quantity">Quantity</th>
+                                            <th class="product_total">Total</th>
+                                        </tr>
+                                    </thead> <!-- End Cart Table Head -->
+                                    <tbody>
+                                        <!-- Start Cart Single Item-->
+                                         {% for item in items %}
+                                        <tr>
+                                            <td class="product_remove"><a href="#"><i class="fa fa-trash-o"></i></a>
+                                            </td>
+                                            <td class="product_thumb"><a href="product-details-default.html">
+                                                    <img src="{{ item.product.imageURL }}" alt="Product Image" onerror="this.onerror=null; this.src='{% static 'assets/images/banner/banner-styl-3-img-1.jpg' %}';">
+                                            <td class="product_name"><a href="product-details-default.html">{{item.product.name}}</a></td>
+                                            <td class="product-price">GHS {{item.product.price}}</td>
+                                            {% comment %} <td class="product_quantity"><label>Quantity</label> <input min="1" {% endcomment %}
+                                                    {% comment %} max="100" value="1" type="number"></td> {% endcomment %}
+                                                    <td class="product_quantity">
+                                                        <label>Quantity</label>
+                                                        <input class="quantity-input" id="quantity-{{ item.product.id }}" min="1" max="100" value="{{ item.quantity }}" type="number">
+                                                        <button class="update-cart" data-product="{{ item.product.id }}" data-action="add">+</button>
+                                                        <button class="update-cart" data-product="{{ item.product.id }}" data-action="remove">-</button>
+                                                    </td>
+                                            
+                                                    <td class="product_total">GHS {{item.get_total}}</td>
+                                        </tr> <!-- End Cart Single Item-->
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- End Cart Table -->
+
+        <!-- Start Coupon Start -->
+        <div class="coupon_area">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6">
+                        <div class="coupon_code right" data-aos="fade-up" data-aos-delay="400">
+                            <h3>Cart Totals</h3>
+                            <div class="coupon_inner">
+                                <div class="cart_subtotal">
+                                    <p>Subtotal</p>
+                                    <p class="cart_amount">GHS {{order.get_cart_total}}</p>
+                                </div>
+                                <div class="cart_subtotal">
+                                    <p>Total</p>
+                                    <p class="cart_amount">GHS{{order.get_cart_total}}</p>
+                                </div>
+                                <div class="checkout_btn">
+                                    <a href="{% url 'checkout' %}" class="btn btn-md btn-golden">Proceed to Checkout</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- End Coupon Start -->
+    </div> <!-- ...:::: End Cart Section:::... -->
+
+    {% else %}
+
+    <div class="empty-cart-section section-fluid">
+        <div class="emptycart-wrapper">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 col-md-10 offset-md-1 col-xl-6 offset-xl-3">
+                        <div class="emptycart-content text-center">
+                            <div class="image">
+                                <img class="img-fluid" src="{% static 'assets/images/emprt-cart/empty-cart.png' %}" alt="">
+                            </div>
+                            <h4 class="title">Your Cart is Empty</h4>
+                            <h6 class="sub-title">Sorry Mate... No item Found inside your cart!</h6>
+                            <a href="{% url 'shop' %}" class="btn btn-lg btn-golden">Continue Shopping</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> <!-- ...::::End  About Us Center Section:::... -->
+
+    {% endif %}
+{% endblock %}

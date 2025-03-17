@@ -1,0 +1,29 @@
+// root level build.gradle
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+rootProject.buildDir = "../build"
+subprojects {
+    project.buildDir = "${rootProject.buildDir}/${project.name}"
+}
+subprojects {
+    project.evaluationDependsOn(":app")
+}
+
+tasks.register("clean", Delete) {
+    delete rootProject.buildDir
+}
+
+// configurations.all {
+//     resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+//         if (details.requested.group == "org.jetbrains.kotlin" && 
+//             (details.requested.name == "kotlin-stdlib" || details.requested.name == "kotlin-stdlib-jdk8")) {
+//             details.useVersion "1.8.22"  // Set to the latest version you want
+//         }
+//     }
+// }
