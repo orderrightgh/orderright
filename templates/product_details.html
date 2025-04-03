@@ -13,8 +13,8 @@
                         <div class="breadcrumb-nav breadcrumb-nav-color--black breadcrumb-nav-hover-color--golden">
                             <nav aria-label="breadcrumb">
                                 <ul>
-                                    <li><a href="index.html">Home</a></li>
-                                    <li><a href="{% url 'index' %}">Shop</a></li>
+                                    <li><a href="{% url 'index' %}">Home</a></li>
+                                    <li><a href="{% url 'shop' %}">Shop</a></li>
                                     <li class="active" aria-current="page">{{product.name}}</li>
                                 </ul>
                             </nav>
@@ -72,7 +72,12 @@
                         data-aos-delay="200">
                         <!-- Start  Product Details Text Area-->
                         <div class="product-details-text">
-                            <h4 style="text-transform: capitalize" class="title">{{product.name}}</h4>
+                            <h4 style="text-transform: capitalize" class="title">
+                                {{product.name}}
+                                {% for list in list|slice:":1" %}
+                                <p data-aos-duration="1000" data-aos="fade-up" style="color: rgba(0, 0, 0, .7)">- {{list}}</p>
+                                {% endfor %}
+                            </h4>
                             <div class="d-flex align-items-center">
                                 <ul class="review-star">
                                     <li class="fill"><i class="ion-android-star"></i></li>
@@ -100,17 +105,19 @@
                             </div>
                             <!-- Product Variable Single Item -->
                             <div class="d-flex align-items-center ">
-                                <div class="variable-single-item ">
+                                {% comment %} <div class="variable-single-item ">
                                     <span>Quantity</span>
                                     <div class="product-variable-quantity">
                                         <input min="1" max="100" value="1" type="number">
                                     </div>
-                                </div>
+                                </div> {% endcomment %}
 
-                                <div class="product-add-to-cart-btn">
+                                <div class="product-add-to-cart-btn" style="display:flex; flex-direction: column;">
                                     <a href="#" data-bs-toggle="modal"
                                                                     data-bs-target="#modalAddcart" data-product={{product.id}} data-action="add" class="update-cart update" 
                                                                     class="btn btn-lg btn-black-default-hover">+ Add To Cart</a>
+                                    <a href="{% url 'cart' %}" 
+                                    class="btn btn-lg btn-black-default-hover">My Cart</a>
                                 </div>
                             </div>
                         </div> <!-- End Product Variable Area -->
@@ -123,7 +130,7 @@
                                 <li><a href="{% url 'phones' %}"> Phones</a></li>
                                 <li><a href="{% url 'accessories' %}"> Phone accessories</a></li>
                                 <li><a href="{% url 'room' %}"> Hostel & Hallroom accessories</a></li>
-                                <li><a href="{% url 'clothing' %}">Clothing and Miscellaneous</a></li>
+                                <li><a href="{% url 'wears' %}">Wears and Miscellaneous</a></li>
                             </ul>
                         </div> <!-- End  Product Details Catagories Area-->
                         <!-- Start  Product Details Social Area-->
@@ -397,22 +404,24 @@
                                 <div class="swiper-wrapper">
                                     <!-- End Product Default Single Item -->
                                     <!-- Start Product Default Single Item -->
-                                     {% for product in products %}
+                                     {% for product in relatedProducts %}
                                      <div class="product-default-single-item product-color--golden swiper-slide">
                                         <div class="image-box">
-                                            <a href="product-details-default.html" class="image-link">
-                                                {% for product_image in product.image.all %}
-                                                <img src="{{ product_image.image.url }}" alt="">
+                                            <a href="{% url 'product_details' product.id %}" class="image-link">
+                                                {% for product_image in product.image.all|slice:":2" %}
+                                                <img style="object-fit: cover;" src="{{ product_image.image.url }}" alt="">
                                                 {% endfor  %}
                                             </a>
                                             <div class="action-link">
                                                 <div class="action-link-left">
                                                     <a href="#" data-bs-toggle="modal"
-                                                        data-bs-target="#modalAddcart"  data-product={{product.id}} data-action="add">Add to Cart</a>
+                                                        data-bs-target="#modalAddcart" class="update-cart"  data-product={{product.id}} data-action="add" >Add to Cart</a>
                                                 </div>
                                                 <div class="action-link-right">
-                                                    <a href="#" data-bs-toggle="modal"
-                                                        data-bs-target="#modalQuickview"  data-product={{product.id}} data-action="add"><i
+                                                    <a href="#" data-product={{product.id}} data-action="add" class="update-cart update" data-bs-toggle="modal"
+                                                    data-bs-target="#modalAddcart"><i
+                                                            class="icon-bag"></i></a>
+                                                    <a href="{% url 'product_details' product.id %}"><i
                                                             class="icon-magnifier"></i></a>
                                                 </div>
                                             </div>

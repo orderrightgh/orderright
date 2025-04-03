@@ -13,49 +13,64 @@ def generate_random_number():
     return random_number
 
 
-goods = Products.objects.all()
+goods = Products.objects.all().order_by('?')    
 random_number = generate_random_number()
 
 # Create your views here.
+def search(request):
+    data = cartData(request)
+    cartItems = data['cartItems']
+    order = data['order']
+    items = data['items']
+    
+
+    if request.method == "POST":
+        searched = request.POST['searched']
+        
+    searched_items = goods.filter(name__contains=searched)
+
+    context= {"products": goods,  'searched': searched, 'searched_items':searched_items, 'items':items, 'order': order, 'cartItems': cartItems}
+    return render(request, 'search.html', context)
+
+
 def index(request):
     data = cartData(request)
     cartItems = data['cartItems']
-    bestSellers = BestSellers.objects.all()
-    context= {"products": goods,  'cartItems': cartItems, 'bestSellers': bestSellers,}
+    order = data['order']
+    items = data['items']
+    bestSellers = BestSellers.objects.all().order_by('?') 
+    posts = Post.objects.all().order_by('?') 
+    newArrivals = NewArrivals.objects.all().order_by('?') 
+    context= {"products": goods, 'items':items, 'order': order, 'cartItems': cartItems, 'bestSellers': bestSellers, 'newArrivals': newArrivals, 'posts': posts,}
     return render(request, 'index.html', context)
 
-def clothing(request):
+def wears(request):
     data = cartData(request)
     cartItems = data['cartItems']
+    order = data['order']
+    items = data['items']
     products = []
     packages = []
     
-    type = Type.objects.all()
     for p in goods:
-        # if p.type.string() == type[3]:
-        if p.type.name == "clothing":
+        if p.type.name == "wears":
 
             products.append(p)
             print(p.type)
         else:
             packages.append(p)
-    
-    
-    context= {"products": products, "packages":packages, 'cartItems': cartItems,}
-    return render(request, 'clothing.html', context)
+    context= {"products": products, "packages":packages, 'items':items, 'order': order, 'cartItems': cartItems,}
+    return render(request, 'wears.html', context)
 
 
 def laptops(request):
     data = cartData(request)
     cartItems = data['cartItems']
-    products = []
+    products =[]
     packages = []
     
-    type = Type.objects.all()
     for p in goods:
-        # if p.type.string() == type[3]:
         if p.type.name == "laptops":
-
             products.append(p)
             print(p.type)
         else:
@@ -77,7 +92,22 @@ def checkout(request):
 
 
 def accessories(request):
-    return render(request, 'accessories.html')
+    data = cartData(request)
+    cartItems = data['cartItems']
+    products = []
+    packages = []
+    
+    for p in goods.order_by('?'):
+        if p.type.name == "phone accessories":
+
+            products.append(p)
+            print(p.type)
+        else:
+            packages.append(p)
+    
+    
+    context= {"products": products, "packages":packages, 'cartItems': cartItems,}
+    return render(request, 'accessories.html', context)
 
 
 def room(request):
@@ -85,7 +115,22 @@ def room(request):
 
 
 def phones(request):
-    return render(request, 'phones.html')
+    data = cartData(request)
+    cartItems = data['cartItems']
+    products = []
+    packages = []
+    
+    for p in goods.order_by('?'):
+        if p.type.name == "phones":
+
+            products.append(p)
+            print(p.type)
+        else:
+            packages.append(p)
+    
+    
+    context= {"products": products, "packages":packages, 'cartItems': cartItems,}
+    return render(request, 'phones.html', context)
 
 
 
@@ -97,10 +142,16 @@ def shop(request):
     context = {'items':items, 'order': order, 'cartItems': cartItems, 'products': goods,}
     return render(request, 'shop.html', context)
 
-def about(request):
-    return render(request, 'about.html')
+def faq(request):
+    data = cartData(request)
+    cartItems = data['cartItems']
+    order = data['order']
+    items = data['items']
+    context = {'items':items, 'order': order, 'cartItems': cartItems}
+    return render(request, 'faq.html', context)
 
-
+def contact(request):
+    return render(request, 'contact.html')
 
 def cart(request):
     data = cartData(request)
@@ -125,28 +176,31 @@ def main(request):
 
 
 def product_details(request, product_id):
+    product = get_object_or_404(Products, pk=product_id)
     data = cartData(request)
     cartItems = data['cartItems']
     order = data['order']
     items = data['items']
 
-    products = []
+    product_type = product.type.name
+
+
+
+    relatedProducts = []
     packages = []
-    type = Type.objects.all()
     for p in goods:
-        if p.type == type[0]:
-            products.append(p)
+        if (p.type.name == product_type) & (p.id != product_id): 
+            relatedProducts.append(p)
             print(p.type)
         else:
             packages.append(p)
 
-
-    product = get_object_or_404(Products, pk=product_id)
+    
     if product.description:
         list = (product.description).split(";")
-        context = {"product": product, "products": products, "list": list, 'items':items, 'order': order, 'cartItems': cartItems, "random_number": random_number,}
+        context = {"product": product, "relatedProducts": relatedProducts, "list": list, 'items':items, 'order': order, 'cartItems': cartItems, "random_number": random_number,}
     else:
-        context = {"product": product, "products": products, "random_number": random_number, 'order': order, 'cartItems': cartItems}
+        context = {"product": product, "relatedProducts": relatedProducts, "random_number": random_number, 'order': order, 'cartItems': cartItems, 'items':items}
     return render(request, 'product_details.html', context)
 
 def update_item(request):
@@ -176,11 +230,27 @@ def update_item(request):
 
 
 def generate_random_string(length):
-    # Define the pool of characters (letters and digits)
     characters = string.ascii_letters + string.digits
-    # Use random.choices to select random characters from the pool
     random_string = ''.join(random.choices(characters, k=length))
     return random_string
 
 
 
+def blog(request):
+    data = cartData(request)
+    cartItems = data['cartItems']
+    order = data['order']
+    items = data['items']
+    postsh = Post.objects.all().order_by('?') 
+    context= {"products": goods, 'items':items, 'order': order, 'cartItems': cartItems, 'posts': postsh,}
+    return render(request, 'blog.html', context)
+
+
+
+
+
+def processOrder(request):
+    data = json.loads(request.body)
+    
+
+    return JsonResponse("Payment complete", safe=False)

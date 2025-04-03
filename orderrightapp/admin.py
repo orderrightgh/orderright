@@ -5,6 +5,8 @@ from .models import *
 # admin.site.register(Products)
 admin.site.register(Type)
 admin.site.register(BestSellers)
+admin.site.register(NewArrivals)
+admin.site.register(Post)
 
 
 

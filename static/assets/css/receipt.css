@@ -32,7 +32,7 @@ form input {
     border-radius: 5px;
     width: 100%;
 }
-button {
+.receipt-button {
     background-color: #5cb85c;
     color: white;
     padding: 10px;
@@ -42,7 +42,7 @@ button {
     width: 100%;
     margin-top: 10px;
 }
-button:hover {
+.receipt-button:hover {
     background-color: #4cae4c;
 }
 .receipt {

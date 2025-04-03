@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from decimal import Decimal
+from django.utils.translation import gettext_lazy as _
 
 # Create your models here.
 
@@ -92,9 +93,14 @@ class Order(models.Model):
         return total
 
 
+
+
+
+
+
 class OrderItem(models.Model):
     product = models.ForeignKey(
-        Products, on_delete=models.SET_NULL, blank=True, null=True
+        Products or Laptops, on_delete=models.SET_NULL, blank=True, null=True
     )
     order = models.ForeignKey(Order, on_delete=models.SET_NULL, blank=True, null=True)
     quantity = models.IntegerField(default=0, null=True, blank=True)
@@ -128,3 +134,43 @@ class BestSellers(models.Model):
 
     def __str__(self):
         return self.product.name
+    
+
+
+class NewArrivals(models.Model):
+    product = models.ForeignKey(
+        Products, on_delete=models.SET_NULL, null=True, blank=True
+    )
+
+    def __str__(self):
+        return self.product.name
+
+
+
+
+class Post(models.Model):
+    title = models.CharField(max_length = 150)
+    url = models.TextField(null=True, blank=True)
+    paragraph = models.TextField(null=True, blank=True)
+    image = models.ImageField(null=True, blank=True, upload_to="posts/")
+    date = models.DateTimeField(_("Date"), auto_now=True)
+
+    def __str__(self):
+        return self.title
+    
+    @property
+    def imageURL(self):
+        try:
+            url = self.image.url
+        except:
+            url = " " 
+        return url
+
+
+
+
+
+
+
+
+

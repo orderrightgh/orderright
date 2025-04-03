@@ -59,7 +59,7 @@
                                     <div class="hero-slider-content">
                                         <h4 class="subtitle">New collection</h4>
                                         <h2 class="title">Foldable <br> laptop tables </h2>
-                                        <a href="product-details-default.html"
+                                        <a href="{% url 'room' %}"
                                             class="btn btn-lg btn-outline-golden">shop now </a>
                                     </div>
                                 </div>
@@ -158,7 +158,7 @@
                                 <h4 class="title">Orderright - Kick Off Great Deals
                                     </h4>
                                 <h5 class="sub-title">Walk the Talk, Save the Cash</h5>
-                                <a href="{% url 'clothing' %}"
+                                <a href="{% url 'wears' %}"
                                     class="btn btn-lg btn-outline-golden icon-space-left"><span
                                         class="d-flex align-items-center">discover now <i
                                             class="ion-ios-arrow-thin-right"></i></span></a>
@@ -268,35 +268,31 @@
                             <div class="swiper-container product-default-slider-4grid-2row">
                                 <!-- Additional required wrapper -->
                                 <div class="swiper-wrapper">
-                                    {% for product in products %}
-                                    <!-- Start Product Default Single Item -->
+                                    {% for product in newArrivals %}
                                     <div class="product-default-single-item product-color--golden swiper-slide">
                                         <div class="image-box">
-                                            <a href="{% url 'product_details' product.id %}" class="image-link">
-                                                {% for product_image in product.image.all %}
-                                                <img src={{product_image.image.url}} alt="">
+                                            <a href="{% url 'product_details' product.product.id%}" class="image-link">
+                                                {% for product_image in product.product.image.all|slice:":2" %}
+                                                <img style="object-fit: cover" src={{product_image.image.url}} alt="">
                                                 {% endfor %}
                                             </a>
-                                            <div class="tag">
-                                                <span>sale</span>
-                                            </div>
                                             <div class="action-link">
                                                 <div class="action-link-left">
-                                                    <a href="#" data-bs-toggle="modal"
-                                                        data-bs-target="#modalAddcart" data-product={{product.id}} data-action="add" class="update-cart update" >Add to Cart</a>
+                                                    <a href="#" data-bs-toggle="modal" data-product={{product.product.id}} data-action="add" class="update-cart update" 
+                                                        data-bs-target="#modalAddcart">Add to Cart</a>
                                                 </div>
                                                 <div class="action-link-right">
-                                                    <a href="#" data-product={{product.id}} data-action="add" class="update-cart update" data-bs-toggle="modal"
+                                                    <a href="#" data-product={{product.product.id}} data-action="add" class="update-cart update" data-bs-toggle="modal"
                                                     data-bs-target="#modalAddcart"><i
                                                             class="icon-bag"></i></a>
-                                                    <a href="{% url 'product_details' product.id %}"><i
+                                                    <a href="{% url 'product_details' product.product.id %}"><i
                                                             class="icon-magnifier"></i></a>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="content">
                                             <div class="content-left">
-                                                <h6 class="title"><a href="{% url 'product_details' product.id %}">{{product.name}}</a></h6>
+                                                <h6 class="title"><a href="{% url 'product_details' product.product.id %}">{{product.product.name}}</a></h6>
                                                 <ul class="review-star">
                                                     <li class="fill"><i class="ion-android-star"></i></li>
                                                     <li class="fill"><i class="ion-android-star"></i></li>
@@ -306,12 +302,12 @@
                                                 </ul>
                                             </div>
                                             <div class="content-right">
-                                                <span class="price">GHS {{product.price}}</span>
+                                                <span class="price">GHS {{product.product.price}}</span>
                                             </div>
 
                                         </div>
                                     </div>
-                                    {% endfor %}
+                                {% endfor %}
                                 </div>
                             </div>
                             <!-- If we need navigation buttons -->
@@ -333,16 +329,16 @@
                     <!-- Start Banner Single Item -->
                     <div class="banner-single-item banner-style-3 banner-animation img-responsive" data-aos="fade-up"
                         data-aos-delay="0">
-                        <div class="image">
-                            <img class="img-fluid" src={% static 'assets/images/banner/banner-style-3-img-1.jpg' %} alt="">
+                        <div class="image" style="height: 80vh; overflow: hidden;">
+                            <img style="object-fit:cover; height: 80vh;" class="img-fluid" src={% static 'assets/images/banner/desert1.jpeg' %} alt="">
                         </div>
-                        <div class="content">
-                            <h3 class="title">Modern Furniture
-                                Basic Collection</h3>
-                            <h5 class="sub-title">We design your home more beautiful</h5>
-                            <a href="product-details-default.html"
+                        <div class="content" >
+                            <h3 style="color: white;" class="title">Orderright-Nikes..
+                                Step Up Right</h3>
+                            <h5 style="color: white;" class="sub-title">We deliver to you wherever you are on campus!</h5>
+                            <a href="{% url 'wears' %}" style="color: white;" 
                                 class="btn btn-lg btn-outline-golden icon-space-left"><span
-                                    class="d-flex align-items-center">discover now <i
+                                    class="d-flex align-items-center" style="color: white;">discover now <i
                                         class="ion-ios-arrow-thin-right"></i></span></a>
                         </div>
                     </div>
@@ -380,14 +376,12 @@
                             <div class="swiper-container product-default-slider-4grid-1row">
                                 <!-- Additional required wrapper -->
                                 <div class="swiper-wrapper">
-                                    <!-- End Product Default Single Item -->
-                                    <!-- Start Product Default Single Item -->
                                 {% for product in bestSellers %}
                                     <div class="product-default-single-item product-color--golden swiper-slide">
                                         <div class="image-box">
-                                            <a href="product-details-default.html" class="image-link">
-                                                {% for product_image in product.product.image.all %}
-                                                <img src={{product_image.image.url}} alt="">
+                                            <a href="{% url 'product_details' product.product.id %}" class="image-link">
+                                                {% for product_image in product.product.image.all|slice:":2" %}
+                                                <img style="object-fit: cover" src={{product_image.image.url}} alt="">
                                                 {% endfor %}
                                             </a>
                                             <div class="action-link">
@@ -396,17 +390,17 @@
                                                         data-bs-target="#modalAddcart">Add to Cart</a>
                                                 </div>
                                                 <div class="action-link-right">
-                                                    <a href="#" data-product={{product.id}} data-action="add" class="update-cart update" data-bs-toggle="modal"
+                                                    <a href="#" data-product={{product.product.id}} data-action="add" class="update-cart update" data-bs-toggle="modal"
                                                     data-bs-target="#modalAddcart"><i
                                                             class="icon-bag"></i></a>
-                                                    <a href="{% url 'product_details' product.id %}"><i
+                                                    <a href="{% url 'product_details' product.product.id %}"><i
                                                             class="icon-magnifier"></i></a>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="content">
                                             <div class="content-left">
-                                                <h6 class="title"><a href="product-details-default.html">{{product.product.name}}</a></h6>
+                                                <h6 class="title"><a href="{% url 'product_details' product.product.id %}">{{product.product.name}}</a></h6>
                                                 <ul class="review-star">
                                                     <li class="fill"><i class="ion-android-star"></i></li>
                                                     <li class="fill"><i class="ion-android-star"></i></li>
@@ -442,12 +436,12 @@
             <div class="banner-single-item banner-style-4 banner-animation banner-color--golden float-left img-responsive"
                 data-aos="fade-up" data-aos-delay="0">
                 <div class="image">
-                    <img class="img-fluid" src={% static 'assets/images/banner/banner-style-4-img-1.jpg' %} alt="">
+                    <img class="img-fluid" style="height: 100%; widht: 100%; object-fit:cover;" src={% static 'assets/images/banner/ps5.png' %} alt="">
                 </div>
-                <a href="product-details-default.html" class="content">
+                <a href="{% url 'room' %}" class="content">
                     <div class="inner">
-                        <h4 class="title">Bar Stool</h4>
-                        <h6 class="sub-title">20 products</h6>
+                        <h4 class="title">PS5</h4>
+                        <h6 class="sub-title">COMING SOON</h6>
                     </div>
                     <span class="round-btn"><i class="ion-ios-arrow-thin-right"></i></span>
                 </a>
@@ -457,12 +451,12 @@
             <div class="banner-single-item banner-style-4 banner-animation banner-color--golden float-left img-responsive"
                 data-aos="fade-up" data-aos-delay="200">
                 <div class="image">
-                    <img class="img-fluid" src={% static 'assets/images/banner/banner-style-4-img-2.jpg' %} alt="">
+                    <img class="img-fluid" src={% static 'assets/images/banner/acer.png' %} alt="">
                 </div>
-                <a href="product-details-default.html" class="content">
+                <a href="{% url 'laptops' %}" class="content">
                     <div class="inner">
-                        <h4 class="title">Armchairs</h4>
-                        <h6 class="sub-title">20 products</h6>
+                        {% comment %} <h4 class="title">ACER NITRO 5</h4> {% endcomment %}
+                        <h6 class="sub-title">COMING SOON</h6>
                     </div>
                     <span class="round-btn"><i class="ion-ios-arrow-thin-right"></i></span>
                 </a>
@@ -472,12 +466,12 @@
             <div class="banner-single-item banner-style-4 banner-animation banner-color--golden float-left img-responsive"
                 data-aos="fade-up" data-aos-delay="400">
                 <div class="image">
-                    <img class="img-fluid" src={% static 'assets/images/banner/banner-style-4-img-3.jpg' %} alt="">
+                    <img class="img-fluid" src={% static 'assets/images/banner/iphone16.png' %} alt="">
                 </div>
-                <a href="product-details-default.html" class="content">
+                <a href="{% url 'phones' %}" class="content">
                     <div class="inner">
-                        <h4 class="title">lighting</h4>
-                        <h6 class="sub-title">20 products</h6>
+                        {% comment %} <h4 class="title"></h4> {% endcomment %}
+                        <h6 class="sub-title">COMING <br>SOON</h6>
                     </div>
                     <span class="round-btn"><i class="ion-ios-arrow-thin-right"></i></span>
                 </a>
@@ -487,12 +481,12 @@
             <div class="banner-single-item banner-style-4 banner-animation banner-color--golden float-left img-responsive"
                 data-aos="fade-up" data-aos-delay="600">
                 <div class="image">
-                    <img class="img-fluid" src={% static 'assets/images/banner/banner-style-4-img-4.jpg' %} alt="">
+                    <img class="img-fluid" src={% static 'assets/images/banner/jbl.png' %} alt="">
                 </div>
-                <a href="product-details-default.html" class="content">
+                <a href="{% url 'accessories' %}" class="content">
                     <div class="inner">
-                        <h4 class="title">Easy chairs</h4>
-                        <h6 class="sub-title">20 products</h6>
+                        <h4 class="title">JBL</h4>
+                        <h6 class="sub-title">COMING SOON</h6>
                     </div>
                     <span class="round-btn"><i class="ion-ios-arrow-thin-right"></i></span>
                 </a>
@@ -503,45 +497,86 @@
     <!-- End Banner Section -->
 
 
-    <!-- Start Instagramr Section -->
-    <div class="instagram-section section-top-gap-100 section-inner-bg">
-        <div class="instagram-wrapper" data-aos="fade-up" data-aos-delay="0">
+    
+
+    <!-- Start Blog Slider Section -->
+    <div class="blog-default-slider-section section-top-gap-100 section-fluid">
+        <!-- Start Section Content Text Area -->
+        <div class="section-title-wrapper" data-aos="fade-up" data-aos-delay="0">
             <div class="container">
                 <div class="row">
                     <div class="col-12">
-                        <div class="instagram-box">
-                            <div id="instagramFeed" class="instagram-grid clearfix">
-                                <a href="https://www.instagram.com/p/CCFOZKDDS6S/" target="_blank"
-                                    class="instagram-image-link float-left banner-animation"><img
-                                        src={% static 'assets/images/instagram/instagram-1.jpg' %} alt=""></a>
-                                <a href="https://www.instagram.com/p/CCFOYDNjWF5/" target="_blank"
-                                    class="instagram-image-link float-left banner-animation"><img
-                                        src={% static 'assets/images/instagram/instagram-2.jpg' %} alt=""></a>
-                                <a href="https://www.instagram.com/p/CCFOXH6D-zQ/" target="_blank"
-                                    class="instagram-image-link float-left banner-animation"><img
-                                        src={% static 'assets/images/instagram/instagram-3.jpg' %} alt=""></a>
-                                <a href="https://www.instagram.com/p/CCFOVcrDDOo/" target="_blank"
-                                    class="instagram-image-link float-left banner-animation"><img
-                                        src={% static 'assets/images/instagram/instagram-4.jpg' %} alt=""></a>
-                                <a href="https://www.instagram.com/p/CCFOUajjABP/" target="_blank"
-                                    class="instagram-image-link float-left banner-animation"><img
-                                        src={% static 'assets/images/instagram/instagram-5.jpg' %} alt=""></a>
-                                <a href="https://www.instagram.com/p/CCFOS2MDmjj/" target="_blank"
-                                    class="instagram-image-link float-left banner-animation"><img
-                                        src={% static 'assets/images/instagram/instagram-6.jpg' %} alt=""></a>
-                            </div>
-                            <div class="instagram-link">
-                                <h5><a href="https://www.instagram.com/myfurniturecom/" target="_blank"
-                                        rel="noopener noreferrer">HONOTEMPLATE</a></h5>
+                        <div class="section-content-gap">
+                            <div class="secton-content">
+                                <h3 class="section-title">OUR LATEST BLOGS</h3>
+                                <p>Have a virtual feeling of our products before you use them, here on orderright blogs!</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- End Instagramr Section -->
+        <!-- Start Section Content Text Area -->
 
-    
+
+        <div class="blog-wrapper" data-aos="fade-up" data-aos-delay="200">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="blog-default-slider default-slider-nav-arrow">
+                            <!-- Slider main container -->
+                            <div class="swiper-container blog-slider">
+                                <!-- Additional required wrapper -->
+                                <div class="swiper-wrapper">
+                                    <!-- Start Product Default Single Item -->
+                                    {% for post in posts|slice:":3" %}
+                                    <div class="blog-default-single-item blog-color--golden swiper-slide">
+                                        
+                                        <div>   
+                                            <div style="width: 350px;" class="blog-list blog-grid-single-item blog-color--golden" data-aos="fade-up" data-aos-delay="400">
+                                                <div style="height: 300px;"  class="blog-video-box">
+                                                    <img style="width: 350px; height: 300px; object-fit:cover;" class="img-fluid" src={{post.image.url}}
+                                                        alt="">
+                                                    <a href="{{post.url}}" class="video-play-btn" data-autoplay="true" data-vbtype="video">
+                                                        <i class="fa fa-youtube-play"></i>
+                                                    </a>
+                                                </div>
+                                                <br>
+                                                <div class="content">
+                                                    <ul class="post-meta">
+                                                        <li>POSTED BY : Orderright</li>
+                                                        <li>ON : {{post.date}}</li>
+                                                    </ul>
+                                                    <h6 class="title">{{post.name}}
+                                                    </h6>
+                                                    <p>{{post.paragraph}}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br></br>
+                                    
+                                    </div>
+                                    {% endfor %}
+                                    <!-- End Product Default Single Item -->
+                                </div>
+                            </div>
+                            <!-- If we need navigation buttons -->
+                            <div class="swiper-button-prev"></div>
+                            <div class="swiper-button-next"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+    </div>
+    <!-- End Blog Slider Section -->
+
+
+
 
     {% endblock %}

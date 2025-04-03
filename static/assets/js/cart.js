@@ -11,9 +11,7 @@ for(let i=0; i<updateCart.length; i++){
             console.log('Not logged in')
             // alert("item added successfully")
             addCookieItem(productId, action)
-            
         }
-
     })
 }
 

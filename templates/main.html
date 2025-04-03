@@ -13,68 +13,11 @@
     <!-- ::::::::::::::Favicon icon::::::::::::::-->
     <link rel="shortcut icon" href={% static 'assets/images/favicon.ico' %} type="image/png">
 
-    <!-- ::::::::::::::All CSS Files here :::::::::::::: -->
-    <!-- Vendor CSS -->
-    <!-- <link rel="stylesheet" href={% static 'assets/css/vendor/font-awesome.min.css' %}>
-    <link rel="stylesheet" href={% static 'assets/css/vendor/ionicons.css' %}>
-    <link rel="stylesheet" href={% static 'assets/css/vendor/simple-line-icons.css' %}>
-    <link rel="stylesheet" href={% static 'assets/css/vendor/jquery-ui.min.css' %}> -->
-
-    <!-- Plugin CSS -->
-    <!-- <link rel="stylesheet" href={% static 'assets/css/plugins/swiper-bundle.min.css' %}>
-    <link rel="stylesheet" href={% static 'assets/css/plugins/animate.min.css' %}>
-    <link rel="stylesheet" href={% static 'assets/css/plugins/nice-select.css' %}>
-    <link rel="stylesheet" href={% static 'assets/css/plugins/venobox.min.css' %}>
-    <link rel="stylesheet" href={% static 'assets/css/plugins/jquery.lineProgressbar.css' %}>
-    <link rel="stylesheet" href={% static 'assets/css/plugins/aos.min.css' %}> -->
-
-    <!-- Main CSS -->
-    <!-- <link rel="stylesheet" href={% static 'assets/sass/style.css' %}> -->
-
     <!-- Use the minified version files listed below for better performance and remove the files listed above -->
     <link rel="stylesheet" href={% static 'assets/css/vendor/vendor.min.css' %}>
     <link rel="stylesheet" href={% static 'assets/css/plugins/plugins.min.css' %}>
     <link rel="stylesheet" href={% static 'assets/css/style.min.css' %}>
     <link rel="stylesheet" href={% static 'assets/css/receipt.css' %}>
-
-    {% comment %} <script>
-        // Set the target date (December 31, 2025)
-        const targetDate = new Date('1929-12-31T23:59:59Z'); // Use UTC time
-
-        async function fetchCurrentTime() {
-            try {
-                const response = await fetch('http://worldclockapi.com/api/json/utc/now');
-                const data = await response.json();
-                return new Date(data.utc_datetime); // Parse the UTC time
-            } catch (error) {
-                console.error('Error fetching current time:', error);
-                return null;
-            }
-        }
-
-        async function updateCountdown() {
-            const now = await fetchCurrentTime();
-            if (now) {
-                const difference = targetDate - now;
-                const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-
-                const countdownElement = document.getElementById('countdown');
-                if (difference > 0) {
-                    countdownElement.textContent = `${days} days remaining`;
-                } else {
-                    countdownElement.textContent = 'The event has started!';
-                }
-            } else {
-                document.getElementById('countdown').textContent = 'Failed to load countdown.';
-            }
-        }
-
-        // Update the countdown every minute
-        setInterval(updateCountdown, 60000);
-
-        // Initial call to display the countdown immediately
-        updateCountdown();
-    </script> {% endcomment %}
 
     <script type="text/javascript">
         var user = '{{request.user}}'
@@ -154,39 +97,40 @@
                                                     <li class="mega-menu-item">
                                                         <a href="#" class="mega-menu-item-title">Other Pages</a>
                                                         <ul class="mega-menu-sub">
+                                                            <li><a href="{% url 'wears' %}">Wears</a></li>
+                                                            <li><a href="{% url 'accessories' %}">Phone accessories</a></li>
+                                                            <li><a href="{% url 'room' %}">Room Accessories</a></li>
+                                                            <li><a href="{% url 'phones' %}">Phones</a></li>
+                                                            <li><a href="{% url 'laptops' %}">Laptops</a></li>
                                                             <li><a href="{% url 'cart' %}">Cart</a></li>
-                                                            {% comment %} <li><a href="{% url 'index' %}">Empty Cart</a></li> {% endcomment %}
-                                                            {% comment %} <li><a href="{% url 'index' %}">Compare</a></li> {% endcomment %}
                                                             <li><a href="{% url 'checkout' %}">Checkout</a></li>
-                                                            {% comment %} <li><a href="{% url 'index' %}">Login</a></li> {% endcomment %}
-                                                            {% comment %} <li><a href="{% url 'index' %}">My Account</a></li> {% endcomment %}
                                                         </ul>
                                                     </li>
                                                 </ul>
                                                 <div class="menu-banner">
-                                                    <a href="#" class="menu-banner-link">
+                                                    <a href="{% url 'wears' %}" class="menu-banner-link">
                                                         <img class="menu-banner-img"
                                                             src={% static 'assets/images/banner/menu-banner.jpg' %} alt="">
                                                     </a>
                                                 </div>
                                             </div>
                                         </li>
-                                        {% comment %} <li class="has-dropdown">
-                                            <a href="blog-single-sidebar-left.html">Blog</a>
-                                        </li> {% endcomment %}
+                                        <li class="has-dropdown">
+                                        <a href="{% url 'blog' %}">Blog</a>
+                                        </li>
                                         <li class="has-dropdown">
                                             <a href="#">Pages <i class="fa fa-angle-down"></i></a>
                                             <!-- Sub Menu -->
                                             <ul class="sub-menu">
-                                                <li><a href="faq.html">Frequently Questions</a></li>
-                                                <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                                                <li><a href="{% url 'faq' %}">Frequently Questions</a></li>
+                                                {% comment %} <li><a href="privacy-policy.html">Privacy Policy</a></li> {% endcomment %}
                                             </ul>
                                         </li>
+                                        {% comment %} <li>
+                                            <a href="{% url 'about' %}">About Us</a>
+                                        </li> {% endcomment %}
                                         <li>
-                                            <a href="about-us.html">About Us</a>
-                                        </li>
-                                        <li>
-                                            <a href="contact-us.html">Contact Us</a>
+                                            <a href="{% url 'contact' %}">Contact Us</a>
                                         </li>
                                     </ul>
                                 </nav>
@@ -288,27 +232,29 @@
                             <a href="{% url 'shop' %}"><span>Shop</span></a>
                             <ul class="mobile-sub-menu">
                                 <li class="mobile-sub-menu">
+                                    <li><a href="{% url 'wears' %}">Wears</a></li>
+                                    <li><a href="{% url 'accessories' %}">Phone accessories</a></li>
+                                    <li><a href="{% url 'room' %}">Room Accessories</a></li>
+                                    <li><a href="{% url 'phones' %}">Phones</a></li>
+                                    <li><a href="{% url 'laptops' %}">Laptops</a></li>
+
                                     <li><a href="{% url 'cart' %}">Cart</a></li>
-                                    {% comment %} <li><a href="empty-cart.html">Empty Cart</a></li> {% endcomment %}
-                                    {% comment %} <li><a href="compare.html">Compare</a></li> {% endcomment %}
                                     <li><a href="{% url 'checkout' %}">Checkout</a></li>
-                                    {% comment %} <li><a href="login.html">Login</a></li> {% endcomment %}
-                                    {% comment %} <li><a href="my-account.html">My Account</a></li> {% endcomment %}
                                 </li>
                             </ul>
                         </li>
                         <li>
-                            <a href="#"><span>Blogs</span></a>
+                            <a href="{% url 'blog' %}"><span>Blogs</span></a>
                         </li>
                         <li>
                             <a href="#"><span>Pages</span></a>
                             <ul class="mobile-sub-menu">
-                                <li><a href="faq.html">Frequently Questions</a></li>
-                                <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                                <li><a href="{% url 'faq' %}">Frequently Questions</a></li>
+                                {% comment %} <li><a href="privacy-policy.html">Privacy Policy</a></li> {% endcomment %}
                             </ul>
                         </li>
-                        <li><a href="about-us.html">About Us</a></li>
-                        <li><a href="contact-us.html">Contact Us</a></li>
+                        {% comment %} <li><a href="{% url 'about' %}">About Us</a></li> {% endcomment %}
+                        <li><a href="{% url 'contact'%}">Contact Us</a></li>
                     </ul>
                 </div> <!-- End Mobile Menu Nav -->
             </div> <!-- End Mobile Menu -->
@@ -322,7 +268,7 @@
                 <address class="address">
                     <span>Address: KNUST Campus.</span>
                     <span>Call Us: +233 59 903 5321, +233 50 736 3108</span>
-                    <span>Email: orderright@gmail.com</span>
+                    <span>Email: orderrightgh@gmail.com</span>
                 </address>
 
                 <ul class="social-link">
@@ -394,7 +340,7 @@
                             <img src="{{ item.product.imageURL }}" class="offcanvas-cart-image" alt="Product Image" onerror="this.onerror=null; this.src='{% static 'assets/images/banner/banner-styl-3-img-1.jpg' %}';">
                         </a>
                         <div class="offcanvas-cart-item-content">
-                            <a href="#" class="offcanvas-cart-item-link">{{item.product.name}}</a>
+                            <a href="{% url 'product_details' item.product.id %}" class="offcanvas-cart-item-link">{{item.product.name}}</a>
                             <div class="offcanvas-cart-item-details">
                                 <span class="offcanvas-cart-item-details-quantity">{{item.quantity}} x </span>
                                 <span class="offcanvas-cart-item-details-price">GHS {{item.product.price}}</span>
@@ -402,7 +348,7 @@
                         </div>
                     </div>
                     <div class="offcanvas-cart-item-delete text-right">
-                        <a href="#" class="offcanvas-cart-item-delete"><i class="fa fa-trash-o"></i></a>
+                        <a data-product="{{ item.product.id }}" data-action="remove" class="offcanvas-cart-item-delete update-cart"><i class="fa fa-trash-o"></i></a>
                     </div>
                 </li>
                 {% endfor %}
@@ -423,8 +369,9 @@
     <!-- Start Offcanvas Search Bar Section -->
     <div id="search" class="search-modal">
         <button type="button" class="close">×</button>
-        <form>
-            <input type="search" placeholder="type keyword(s) here" />
+        <form method=POST action="{% url 'search' %}">
+            {% csrf_token %}
+            <input type="search" placeholder="type keyword(s) here" name="searched" />
             <button type="submit" class="btn btn-lg btn-golden">Search</button>
         </form>
     </div>
@@ -449,13 +396,13 @@
                             <!-- Start Footer Single Item -->
                             <div class="footer-widget-single-item footer-widget-color--golden" data-aos="fade-up"
                                 data-aos-delay="0">
-                                <h5 class="title">INFORMATION</h5>
+                                <h5 class="title">DASHBOARD</h5>
                                 <ul class="footer-nav">
-                                    <li><a href="#">Delivery Information</a></li>
-                                    <li><a href="#">Terms & Conditions</a></li>
-                                    <li><a href="contact-us.html">Contact</a></li>
-                                    <li><a href="#">Returns</a></li>
+                                    <li><a href="{% url 'index'%}">Home</a></li>
+                                    <li><a href="{% url 'contact'%}">Contact</a></li>
+                                    <li><a href="{% url 'blog'%}">Blog</a></li>
                                 </ul>
+                                
                             </div>
                             <!-- End Footer Single Item -->
                         </div>
@@ -463,12 +410,14 @@
                             <!-- Start Footer Single Item -->
                             <div class="footer-widget-single-item footer-widget-color--golden" data-aos="fade-up"
                                 data-aos-delay="200">
-                                <h5 class="title">MY ACCOUNT</h5>
+                                <h5 class="title">OTHER PAGES</h5>
                                 <ul class="footer-nav">
-                                    <li><a href="my-account.html">My account</a></li>
-                                    <li><a href="privacy-policy.html">Privacy Policy</a></li>
-                                    <li><a href="faq.html">Frequently Questions</a></li>
-                                    <li><a href="#">Order History</a></li>
+                                    {% comment %} <li><a href="my-account.html">My account</a></li> {% endcomment %}
+                                    {% comment %} <li><a href="privacy-policy.html">Privacy Policy</a></li> {% endcomment %}
+                                    <li><a href="{% url 'cart' %}">Cart</a></li>
+                                    <li><a href="{% url 'checkout' %}"> Checkout</a></li>
+                                    <li><a href="{% url 'faq' %}">Frequently Questions</a></li>
+                                    {% comment %} <li><a href="#">Order History</a></li> {% endcomment %}
                                 </ul>
                             </div>
                             <!-- End Footer Single Item -->
@@ -483,7 +432,7 @@
                                     <li><a href="{% url 'phones' %}"> Phones</a></li>
                                     <li><a href="{% url 'accessories' %}"> Phone accessories</a></li>
                                     <li><a href="{% url 'room' %}"> Hostel & Hallroom accessories</a></li>
-                                    <li><a href="{% url 'clothing' %}">Clothing and Miscellaneous</a></li>
+                                    <li><a href="{% url 'wears' %}">Wears and Miscellaneous</a></li>
                                 </ul>
                             </div>
                             <!-- End Footer Single Item -->
@@ -494,12 +443,12 @@
                                 data-aos-delay="600">
                                 <h5 class="title">ABOUT US</h5>
                                 <div class="footer-about">
-                                    <p>We are a team of designers and developers that create high quality Magento,
-                                        Prestashop, Opencart.</p>
+                                    <p>We are a team of developers reading Computer Engineering in KNUST, that love to create high quality websites and software
+                                        solutions to make life on campus easier</p>
 
                                     <address class="address">
                                         <span>Address: KNUST Campus.</span>
-                                        <span>Email: orderright@gmail.com</span>
+                                        <span>Email: orderrightgh@gmail.com</span>
                                     </address>
                                 </div>
                             </div>
@@ -529,9 +478,10 @@
                             <div class="footer-newsletter" data-aos="fade-up" data-aos-delay="200">
                                 <h4 class="title">DON'T MISS OUT ON THE LATEST</h4>
                                 <div class="form-newsletter">
-                                    <form action="#" method="post">
+                                    <form action="https://formspree.io/f/mblglayn" method="post">
+                                        {% csrf_token %}
                                         <div class="form-fild-newsletter-single-item input-color--golden">
-                                            <input type="email" placeholder="Your email address..." required>
+                                            <input type="email" placeholder="Your email address..." required name="email_subsribe">
                                             <button type="submit">SUBSCRIBE!</button>
                                         </div>
                                     </form>
@@ -550,16 +500,14 @@
                         class="row justify-content-between align-items-center align-items-center flex-column flex-md-row mb-n6">
                         <div class="col-auto mb-6">
                             <div class="footer-copyright">
-                                <p class="copyright-text">&copy; 2021 <a href="{% url 'index' %}">therankme</a>. Made with <i
-                                        class="fa fa-heart text-danger"></i> by <a href="https://therankme.com/"
-                                        target="_blank">therankme</a> </p>
+                                <p class="copyright-text">Copyrights &copy; 2025 <a href="{% url 'index' %}">orderright</a>, All Rights Reserved</p>
 
                             </div>
                         </div>
                         <div class="col-auto mb-6">
                             <div class="footer-payment">
                                 <div class="image">
-                                    <img src={% static 'assets/images/company-logo/payment.png' %} alt="">
+                                    {% comment %} <img src={% static 'assets/images/company-logo/payment.png' %} alt=""> {% endcomment %}
                                 </div>
                             </div>
                         </div>
@@ -609,9 +557,9 @@
                             </div>
                             <div class="col-md-5 modal-border">
                                 <ul class="modal-add-cart-product-shipping-info">
-                                    <li> <strong><i class="icon-shopping-cart"></i> There Are 5 Items In Your
+                                    <li> <strong><i class="icon-shopping-cart"></i> There Are {{cartItems}} Items In Your
                                             Cart.</strong></li>
-                                    <li> <strong>TOTAL PRICE: </strong> <span>$187.00</span></li>
+                                    <li> <strong>TOTAL PRICE: </strong> <span>GHS {{order.get_cart_total}}</span></li>
                                     <li class="modal-continue-button"><a href="#" data-bs-dismiss="modal">CONTINUE
                                             SHOPPING</a></li>
                                 </ul>
@@ -632,6 +580,183 @@
 
     <!-- Main JS -->
     <script src={% static 'assets/js/main.js' %}></script>
+
+
+
+    <script type="text/javascript">
+        // Get the form and submit button
+        const formEl = document.getElementById("receiptForm");
+    
+        // Add a submit event listener to the form
+        formEl.addEventListener("submit", async function (e) {
+            e.preventDefault(); // Prevent the default form submission
+            console.log("Form submitted...");
+    
+            try {
+                // Step 1: Submit the form to Formspree
+                const formspreeResponse = await submitToFormspree();
+    
+                // Step 2: If Formspree submission is successful, clear the cart
+                if (formspreeResponse.ok) {
+                    console.log("Formspree submission successful");
+                    clearCartAndRedirect();
+                } else {
+                    console.error("Formspree submission failed");
+                    alert("Form submission failed. Please try again.");
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                alert("An error occurred. Please try again.");
+            }
+        });
+    
+        // Function to submit the form to Formspree
+        async function submitToFormspree() {
+            const formspreeUrl = "https://formspree.io/f/moveldny"; // Your Formspree endpoint
+            const formData = new FormData(formEl); // Create FormData from the form
+            const name_receipt = document.getElementById("form");
+
+    
+            // Send the form data to Formspree
+            return fetch(formspreeUrl, {
+                method: "POST",
+                body: formData,
+                headers: {
+                    Accept: "application/json", // Ensure Formspree returns JSON
+                },
+            });
+        }
+    
+        // Function to clear the cart and redirect
+        function clearCartAndRedirect() {
+            console.log("Clearing cart...");
+    
+            // Clear the cart
+            const cart = {};
+            document.cookie = "cart=" + JSON.stringify(cart) + ";domain=;path=/";
+            alert("Thanks, "+name_receipt.value )
+    
+            // Redirect to the home page
+            window.location.href = "{% url 'index' %}";
+        }
+    </script>
+
+    <script type="text/javascript">
+        const formEl_contact = document.getElementById("contact-form");
+        const name_contact = document.getElementById("contact-name");
+
+    
+        formEl_contact.addEventListener("submit", async function (e) {
+            e.preventDefault(); 
+            console.log("Form submitted...");
+    
+            try {
+                const formspreeResponse = await submitToFormspree();
+    
+                if (formspreeResponse.ok) {
+                    console.log("Formspree submission successful");
+                    Redirect();
+                } else {
+                    console.error("Formspree submission failed");
+                    alert("Form submission failed. Please try again.");
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                alert("An error occurred. Please try again."+ error);
+            }
+        });
+    
+        async function submitToFormspree() {
+            const formspreeUrl = "https://formspree.io/f/xoveldjb"; // Your Formspree endpoint
+            const formData = new FormData(formEl_contact); // Create FormData from the form
+    
+            return fetch(formspreeUrl, {
+                method: "POST",
+                body: formData,
+                headers: {
+                    Accept: "application/json", // Ensure Formspree returns JSON
+                },
+            });
+        }
+        function Redirect() {
+            console.log("Redirecting...");
+            alert("Message Delivered Successfully, "+name_contact.value);
+            window.location.href = "{% url 'contact' %}";
+        }
+    </script>
+
+{% comment %} 
+    <script>
+        var updateCart = document.querySelectorAll(".update-cart")
+
+        for(let i=0; i<updateCart.length; i++){
+            updateCart[i].addEventListener("click", ()=>{
+                var productId = updateCart[i].dataset.product
+                var action = updateCart[i].dataset.action
+                console.log("productId:", productId, "Action:", action)
+
+
+                if(user === 'AnonymousUser'){
+                    console.log('Not logged in')
+                    // alert("item added successfully")
+                    addCookieItem(productId, action)
+                }
+            })
+        }
+
+        function addCookieItem(productId, action){
+            if(action == 'add'){
+                if(cart[productId] == undefined){
+                    cart[productId] = {'quantity' : 1}
+                }
+                else{
+                    // cart[productId][quantity]++
+                    cart[productId]['quantity'] += 1
+                }
+            }
+            else if(action == 'remove'){
+                if(cart[productId] == undefined){
+                    alert("Item not found in cart")
+                }
+                else{
+                    cart[productId]['quantity'] -= 1
+                    if(cart[productId]['quantity'] == 0){
+                        delete cart[productId]
+                    }
+                }
+            }
+            document.cookie = 'cart=' + JSON.stringify(cart) + ";domain=;path=/"
+            location.reload()
+        }
+
+        function updateUserOrder (productId, action){
+            console.log("user is logged in, sending data...")
+
+            var url = 'update_item'
+
+            fetch(url, {
+                method: 'POST', 
+                headers:{
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrftoken,
+                },
+                body:JSON.stringify({'productId': productId, 'action': action}) 
+            })
+            .then((response) =>{
+                return response.json()
+            })
+
+            .then((data) =>{
+                console.log('data', data)
+                location.reload()
+            })
+        }
+
+
+
+
+
+    </script> {% endcomment %}
 
 </body>
 

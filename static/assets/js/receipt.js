@@ -5,8 +5,9 @@ document.getElementById('generateBtn').addEventListener('click', function() {
     const telephone = document.getElementById('telephone').value;
     const amount = document.getElementById('amount_').value;
     const from = document.getElementById('from').value;
+    const location = document.getElementById('location').value;
+    const otherLocation = document.getElementById('otherLocation').value;
     const paymentFor = document.querySelectorAll('.paymentFor');
-    // const receivedBy = document.getElementById('receivedBy').value;
     myArray =[];
     
 
@@ -15,9 +16,14 @@ document.getElementById('generateBtn').addEventListener('click', function() {
     }
     // Update receipt preview
     document.getElementById('displayReceiptNo').innerText = receiptNo;
-    // document.getElementById('displayDate').innerText = telephone;
     document.getElementById('displayAmount').innerText = amount;
     document.getElementById('displayFrom').innerText = from;
+    if(otherLocation !== "" && (location == "Others" || location == "")  ){
+    document.getElementById('displayLocation').innerText = otherLocation;
+    }
+    else{
+        document.getElementById('displayLocation').innerText = location;
+    }
     document.getElementById('displayTelephone').innerText = telephone;
     
     document.getElementById('displayPaymentFor').innerText = myArray;

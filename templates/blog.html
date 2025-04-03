@@ -1,0 +1,112 @@
+{% extends 'main.html' %}
+{% load static %}
+
+    {% block content %}
+    <!-- ...:::: Start Breadcrumb Section:::... -->
+    <div class="breadcrumb-section breadcrumb-bg-color--golden">
+        <div class="breadcrumb-wrapper">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <h3 class="breadcrumb-title">Orderright Blog page</h3>
+                        <div class="breadcrumb-nav breadcrumb-nav-color--black breadcrumb-nav-hover-color--golden">
+                            <nav aria-label="breadcrumb">
+                                <ul>
+                                    <li><a href="{% url 'index' %}">Home</a></li>
+                                    <li><a href="{% url 'blog' %}">Blog</a></li>
+                                    <li class="active" aria-current="page">Orderright Blog page</li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> <!-- ...:::: End Breadcrumb Section:::... -->
+
+    <!-- ...:::: Start Blog List Section:::... -->
+    <div class="blog-section">
+        <div class="container">
+            <div class="row flex-column-reverse flex-lg-row-reverse">
+                <div class="col-lg-3">
+                    <!-- Start Sidebar Area -->
+                    <div class="siderbar-section" data-aos="fade-up" data-aos-delay="0">
+
+                        <!-- Start Single Sidebar Widget -->
+                        <div class="sidebar-single-widget">
+                            <h6 class="sidebar-title">Search</h6>
+                            <div class="default-search-style d-flex">
+                                <input class="default-search-style-input-box" type="search" placeholder="Search..."
+                                    required>
+                                <button class="default-search-style-input-btn" type="submit"><i
+                                        class="fa fa-search"></i></button>
+                            </div>
+                        </div> <!-- End Single Sidebar Widget -->
+
+                        <!-- Start Single Sidebar Widget -->
+                        <div class="sidebar-single-widget">
+                            <h6 class="sidebar-title">PRODUCT CATEGORIES</h6>
+                            <div class="sidebar-content">
+                                <ul class="sidebar-menu">
+                                   <li><a href="{% url 'laptops' %}">Laptops</a></li>
+                                    <li><a href="{% url 'phones' %}"> Phones</a></li>
+                                    <li><a href="{% url 'accessories' %}"> Phone accessories</a></li>
+                                    <li><a href="{% url 'room' %}"> Hostel & Hallroom accessories</a></li>
+                                    <li><a href="{% url 'wears' %}">Wears and Miscellaneous</a></li>
+                                </ul>
+                            </div>
+                        </div> <!-- End Single Sidebar Widget -->
+
+                    </div> <!-- End Sidebar Area -->
+                </div>
+                <div class="col-lg-9">
+                    <div class="blog-wrapper">
+                        <div class="row mb-n6">
+                            {% for post in posts %}
+                            <div class="col-12 mb-6">
+                                <!-- Start Product Default Single Item -->
+                                <div class="blog-list blog-list-single-item blog-color--golden" data-aos="fade-up"
+                                    data-aos-delay="400">
+                                    <div class="row">
+                                        <div class="col-xl-5 col-md-6">
+                                            <div class="blog-video-box">
+                                                <img class="img-fluid"
+                                                    src={{post.image.url}} alt="">
+                                                <a href="{{post.url}}" class="video-play-btn"
+                                                    data-autoplay="true" data-vbtype="video">
+                                                    <i class="fa fa-youtube-play"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-7 col-md-6">
+                                            <div class="content">
+                                                <ul class="post-meta">
+                                                    <li>POSTED BY : <a href="#" class="author">Orderright</a></li>
+                                                    <li>ON : {{post.date}}</li>
+                                                </ul>
+                                                <h6 class="title">{{post.name}}</h6>
+                                                <p>{{post.paragraph}}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- End Product Default Single Item -->
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- Start Pagination -->
+                    <div class="page-pagination text-center" data-aos="fade-up" data-aos-delay="0">
+                        <ul>
+                            <li><a class="active" href="#">1</a></li>
+                            <li><a href="#">2</a></li>
+                            <li><a href="#">3</a></li>
+                            <li><a href="#"><i class="ion-ios-skipforward"></i></a></li>
+                        </ul>
+                    </div> <!-- End Pagination -->
+                </div>
+            </div>
+        </div>
+    </div> <!-- ...:::: End List Section:::... -->
+    {% endblock %}

@@ -13,6 +13,11 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 import os
 
+from dotenv import load_dotenv
+load_dotenv()
+
+import cloudinary
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -24,6 +29,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure--jscs1mghf5o5d$*9imzd0vaq1x3m577x6jyf69j#qsyl*cot7'
 
 # SECURITY WARNING: don't run with debug turned on in production!
+# DEBUG = os.getenv('DEBUG') == 'True'
+
 DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
@@ -81,6 +88,14 @@ DATABASES = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
+    # "default": {
+    #     "ENGINE": os.getenv('ENGINE'),
+    #     "NAME": os.getenv('NAME'),
+    #     "USER": os.getenv('USER'),
+    #     "PASSWORD": os.getenv('PASSWORD'),
+    #     "HOST": os.getenv('HOST'),
+    #     "PORT": os.getenv('PORT'),
+    # }
 }
 
 
@@ -122,7 +137,20 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
-MEDIA_ROOT = os.path.join(BASE_DIR, "static/assets/media/") 
+# MEDIA_ROOT = os.path.join(BASE_DIR, "static/assets/media/") 
+
+MEDIA_ROOT = os.path.join(BASE_DIR, "media/") 
+MEDIA_URL = '/media/'
+
+
+# cloudinary.config(
+#     cloud_name = os.getenv('CLOUD_NAME'),
+#     api_key = os.getenv('API_KEY'),
+#     api_secret = os.getenv('API_SECRET'),
+# )
+
+# DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
+
 
 
 # Default primary key field type
