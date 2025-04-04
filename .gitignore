@@ -1,5 +1,6 @@
 # Virtual environment
 venv/
+media/
 
 # Byte-compiled / optimized Python files
 __pycache__/
