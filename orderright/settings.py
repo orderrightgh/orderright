@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'orderrightapp',
+    "cloudinary",
+    "cloudinary_storage",
 ]
 
 MIDDLEWARE = [
@@ -84,18 +86,18 @@ WSGI_APPLICATION = 'orderright.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-    # "default": {
-    #     "ENGINE": os.getenv('ENGINE'),
-    #     "NAME": os.getenv('NAME'),
-    #     "USER": os.getenv('USER'),
-    #     "PASSWORD": os.getenv('PASSWORD'),
-    #     "HOST": os.getenv('HOST'),
-    #     "PORT": os.getenv('PORT'),
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': BASE_DIR / 'db.sqlite3',
     # }
+    "default": {
+        "ENGINE": os.getenv('ENGINE'),
+        "NAME": os.getenv('NAME'),
+        "USER": os.getenv('USER'),
+        "PASSWORD": os.getenv('PASSWORD'),
+        "HOST": os.getenv('HOST'),
+        "PORT": os.getenv('PORT'),
+    }
 }
 
 
@@ -116,6 +118,8 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+
 
 
 # Internationalization
@@ -139,8 +143,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 # MEDIA_ROOT = os.path.join(BASE_DIR, "static/assets/media/") 
 
-MEDIA_ROOT = os.path.join(BASE_DIR, "media/") 
-MEDIA_URL = '/media/'
+# MEDIA_ROOT = os.path.join(BASE_DIR, "media/") 
+# MEDIA_URL = '/media/'
 
 
 # cloudinary.config(
@@ -149,7 +153,23 @@ MEDIA_URL = '/media/'
 #     api_secret = os.getenv('API_SECRET'),
 # )
 
-# DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
+CLOUDINARY_STORAGE = {
+    "CLOUD_NAME": os.getenv('CLOUD_NAME'),
+    "API_KEY": os.getenv('API_KEY'),
+    "API_SECRET": os.getenv('API_SECRET'),
+}
+
+
+STORAGES = {
+    "default": {
+        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
+}
+
+# DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage.posts"
 
 
 

@@ -1,0 +1,1 @@
+web: gunicorn orderright.wsgi --log-file -
