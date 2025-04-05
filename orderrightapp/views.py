@@ -5,6 +5,8 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render
 from .models import *
 from .utils import cookieCart, cartData
+from django.core.paginator import Paginator
+from django.db.models import Q
 
 
 def generate_random_number():
@@ -13,26 +15,81 @@ def generate_random_number():
     return random_number
 
 
-goods = Products.objects.all().order_by('?')    
+# goods = Products.objects.all().order_by('?')
+goods = Products.objects.select_related('type').prefetch_related('image').order_by('?')
 random_number = generate_random_number()
 
 # Create your views here.
-def search(request):
+# views.py
+
+
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.views.decorators.cache import cache_page
+cache_15min = cache_page(60 * 15)
+
+@cache_15min 
+def shop(request):
     data = cartData(request)
     cartItems = data['cartItems']
     order = data['order']
     items = data['items']
     
+    # Set up pagination
+    paginator = Paginator(goods, 12)  # Show 12 products per page
+    page = request.GET.get('page')
+    
+    try:
+        products = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page
+        products = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range, deliver last page
+        products = paginator.page(paginator.num_pages)
+    
+    context = {
+        'items': items,
+        'order': order,
+        'cartItems': cartItems,
+        'products': products,  # This is the paginated Page object
+        'page_obj': products,  # Explicitly pass as page_obj for template clarity
+    }
+    return render(request, 'shop.html', context)
+
+
+def search(request):
+    data = cartData(request)
+    cartItems = data['cartItems']
+    order = data['order']
+    items = data['items']
+    # goods = Products.objects.all().order_by('?')
+    
+
+    # if request.method == "POST":
+    #     searched = request.POST['searched']
+        
+    # searched_items = goods.filter(name__contains=searched)
+
 
     if request.method == "POST":
-        searched = request.POST['searched']
+        searched = request.POST.get('searched', '').strip()
         
-    searched_items = goods.filter(name__contains=searched)
-
+        # Split search terms by spaces
+        search_terms = searched.split()
+        
+        # Start with an empty Q object
+        query = Q()
+        
+        for term in search_terms:
+            # For each term, create OR condition between name and description
+            query &= (Q(name__icontains=term) | Q(description__icontains=term))
+        
+        searched_items = Products.objects.filter(query).distinct()
     context= {"products": goods,  'searched': searched, 'searched_items':searched_items, 'items':items, 'order': order, 'cartItems': cartItems}
     return render(request, 'search.html', context)
 
 
+@cache_15min 
 def index(request):
     data = cartData(request)
     cartItems = data['cartItems']
@@ -44,41 +101,86 @@ def index(request):
     context= {"products": goods, 'items':items, 'order': order, 'cartItems': cartItems, 'bestSellers': bestSellers, 'newArrivals': newArrivals, 'posts': posts,}
     return render(request, 'index.html', context)
 
+
+@cache_15min 
 def wears(request):
     data = cartData(request)
     cartItems = data['cartItems']
     order = data['order']
     items = data['items']
-    products = []
+    wears = []
     packages = []
     
     for p in goods:
         if p.type.name == "wears":
 
-            products.append(p)
+            wears.append(p)
             print(p.type)
         else:
             packages.append(p)
-    context= {"products": products, "packages":packages, 'items':items, 'order': order, 'cartItems': cartItems,}
+
+    paginator = Paginator(wears, 12)  # Show 12 products per page
+    page = request.GET.get('page')
+    
+    try:
+        products = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page
+        products = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range, deliver last page
+        products = paginator.page(paginator.num_pages)
+    
+    context = {
+        'items': items,
+        'order': order,
+        'cartItems': cartItems,
+        "packages":packages,
+        'products': products,  # This is the paginated Page object
+        'page_obj': products,  # Explicitly pass as page_obj for template clarity
+    }
     return render(request, 'wears.html', context)
 
 
+@cache_15min 
 def laptops(request):
     data = cartData(request)
     cartItems = data['cartItems']
-    products =[]
+    order = data['order']
+    items = data['items']
+    laptops =[]
     packages = []
     
     for p in goods:
         if p.type.name == "laptops":
-            products.append(p)
+            laptops.append(p)
             print(p.type)
         else:
             packages.append(p)
     
+    paginator = Paginator(laptops, 12)  # Show 12 products per page
+    page = request.GET.get('page')
     
-    context= {"products": products, "packages":packages, 'cartItems': cartItems,}
+    try:
+        products = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page
+        products = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range, deliver last page
+        products = paginator.page(paginator.num_pages)
+    
+    context = {
+        'items': items,
+        'order': order,
+        'cartItems': cartItems,
+        "packages":packages,
+        'products': products,  # This is the paginated Page object
+        'page_obj': products,  # Explicitly pass as page_obj for template clarity
+    }
     return render(request, 'laptops.html', context)
+
+
 
 def checkout(request):
     data = cartData(request)
@@ -91,56 +193,93 @@ def checkout(request):
     return render(request, "checkout.html", context)
 
 
+
+@cache_15min 
 def accessories(request):
     data = cartData(request)
     cartItems = data['cartItems']
-    products = []
+    order = data['order']
+    items = data['items']
+    accessories = []
     packages = []
     
     for p in goods.order_by('?'):
         if p.type.name == "phone accessories":
 
-            products.append(p)
+            accessories.append(p)
             print(p.type)
         else:
             packages.append(p)
     
+    paginator = Paginator(accessories, 12)  # Show 12 products per page
+    page = request.GET.get('page')
     
-    context= {"products": products, "packages":packages, 'cartItems': cartItems,}
+    try:
+        products = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page
+        products = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range, deliver last page
+        products = paginator.page(paginator.num_pages)
+
+    context = {
+        'items': items,
+        'order': order,
+        'cartItems': cartItems,
+        "packages":packages,
+        'products': products,  # This is the paginated Page object
+        'page_obj': products,  # Explicitly pass as page_obj for template clarity
+    }
     return render(request, 'accessories.html', context)
 
 
+
+@cache_15min 
 def room(request):
     return render(request, 'room.html')
 
-
+@cache_15min 
 def phones(request):
     data = cartData(request)
     cartItems = data['cartItems']
-    products = []
+    order = data['order']
+    items = data['items']
+    phones = []
     packages = []
     
     for p in goods.order_by('?'):
         if p.type.name == "phones":
 
-            products.append(p)
+            phones.append(p)
             print(p.type)
         else:
             packages.append(p)
     
+    paginator = Paginator(phones, 12)  # Show 12 products per page
+    page = request.GET.get('page')
     
-    context= {"products": products, "packages":packages, 'cartItems': cartItems,}
+    try:
+        products = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page
+        products = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range, deliver last page
+        products = paginator.page(paginator.num_pages)
+
+    context = {
+        'items': items,
+        'order': order,
+        'cartItems': cartItems,
+        "packages":packages,
+        'products': products,  # This is the paginated Page object
+        'page_obj': products,  # Explicitly pass as page_obj for template clarity
+    }
     return render(request, 'phones.html', context)
 
 
 
-def shop(request):
-    data = cartData(request)
-    cartItems = data['cartItems']
-    order = data['order']
-    items = data['items']
-    context = {'items':items, 'order': order, 'cartItems': cartItems, 'products': goods,}
-    return render(request, 'shop.html', context)
 
 def faq(request):
     data = cartData(request)
@@ -149,6 +288,7 @@ def faq(request):
     items = data['items']
     context = {'items':items, 'order': order, 'cartItems': cartItems}
     return render(request, 'faq.html', context)
+
 
 def contact(request):
     return render(request, 'contact.html')
@@ -174,7 +314,7 @@ def main(request):
     return render(request, "main.html", context)
 
 
-
+@cache_15min 
 def product_details(request, product_id):
     product = get_object_or_404(Products, pk=product_id)
     data = cartData(request)
@@ -202,6 +342,8 @@ def product_details(request, product_id):
     else:
         context = {"product": product, "relatedProducts": relatedProducts, "random_number": random_number, 'order': order, 'cartItems': cartItems, 'items':items}
     return render(request, 'product_details.html', context)
+
+
 
 def update_item(request):
     data = json.loads(request.body)
@@ -235,7 +377,7 @@ def generate_random_string(length):
     return random_string
 
 
-
+@cache_15min 
 def blog(request):
     data = cartData(request)
     cartItems = data['cartItems']
@@ -244,7 +386,6 @@ def blog(request):
     postsh = Post.objects.all().order_by('?') 
     context= {"products": goods, 'items':items, 'order': order, 'cartItems': cartItems, 'posts': postsh,}
     return render(request, 'blog.html', context)
-
 
 
 

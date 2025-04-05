@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+from whitenoise.storage import CompressedManifestStaticFilesStorage
 
 from dotenv import load_dotenv
 load_dotenv()
@@ -140,6 +141,9 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+WHITENOISE_MAX_AGE = 31536000  # 1 year cache
+WHITENOISE_IMMUTABLE_FILE_TEST = lambda path: path.split('/')[-1].split('.')[0] in ('version', 'hash')
 
 # MEDIA_ROOT = os.path.join(BASE_DIR, "static/assets/media/") 
 
