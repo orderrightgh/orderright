@@ -55,9 +55,9 @@
                                         <tr>
                                             <td class="product_remove"><i class="fa fa-trash-o update-cart" style="color: red;" data-product="{{ item.product.id }}" data-action="remove"></i>
                                             </td>
-                                            <td class="product_thumb"><a href="product-details-default.html">
+                                            <td class="product_thumb"><a href="{% url 'product_details' item.product.id %} ">
                                                     <img src="{{ item.product.imageURL }}" alt="Product Image" onerror="this.onerror=null; this.src='{% static 'assets/images/banner/banner-styl-3-img-1.jpg' %}';">
-                                            <td class="product_name"><a href="product-details-default.html">{{item.product.name}}</a></td>
+                                            <td class="product_name"><a href="{% url 'product_details' item.product.id %} ">{{item.product.name}}</a></td>
                                             <td class="product-price">GHS {{item.product.price}}</td>
                                                     <td class="product_quantity">
                                                         <label>Qty</label>

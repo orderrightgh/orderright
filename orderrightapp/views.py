@@ -27,7 +27,6 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.decorators.cache import cache_page
 cache_15min = cache_page(60 * 15)
 
-@cache_15min 
 def shop(request):
     data = cartData(request)
     cartItems = data['cartItems']
@@ -89,7 +88,6 @@ def search(request):
     return render(request, 'search.html', context)
 
 
-@cache_15min 
 def index(request):
     data = cartData(request)
     cartItems = data['cartItems']
@@ -102,7 +100,6 @@ def index(request):
     return render(request, 'index.html', context)
 
 
-@cache_15min 
 def wears(request):
     data = cartData(request)
     cartItems = data['cartItems']
@@ -142,7 +139,6 @@ def wears(request):
     return render(request, 'wears.html', context)
 
 
-@cache_15min 
 def laptops(request):
     data = cartData(request)
     cartItems = data['cartItems']
@@ -194,7 +190,6 @@ def checkout(request):
 
 
 
-@cache_15min 
 def accessories(request):
     data = cartData(request)
     cartItems = data['cartItems']
@@ -235,11 +230,9 @@ def accessories(request):
 
 
 
-@cache_15min 
 def room(request):
     return render(request, 'room.html')
 
-@cache_15min 
 def phones(request):
     data = cartData(request)
     cartItems = data['cartItems']
@@ -314,7 +307,6 @@ def main(request):
     return render(request, "main.html", context)
 
 
-@cache_15min 
 def product_details(request, product_id):
     product = get_object_or_404(Products, pk=product_id)
     data = cartData(request)
@@ -377,7 +369,6 @@ def generate_random_string(length):
     return random_string
 
 
-@cache_15min 
 def blog(request):
     data = cartData(request)
     cartItems = data['cartItems']
