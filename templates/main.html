@@ -586,20 +586,22 @@
     <script type="text/javascript">
         // Get the form and submit button
         const formEl_receipt = document.getElementById("receiptForm");
+        const name_receipt = document.getElementById("from");
     
         // Add a submit event listener to the form
         formEl_receipt.addEventListener("submit", async function (e) {
             e.preventDefault(); // Prevent the default form submission
             console.log("Form submitted...");
+            
     
             try {
                 // Step 1: Submit the form to Formspree
-                const formspreeResponse = await submitToFormspree();
+                const formspreeResponse_receipt = await submitToFormspree_receipt();
     
                 // Step 2: If Formspree submission is successful, clear the cart
-                if (formspreeResponse.ok) {
+                if (formspreeResponse_receipt.ok) {
                     console.log("Formspree submission successful");
-                    clearCartAndRedirect();
+                    clearCartAndRedirect_receipt();
                 } else {
                     console.error("Formspree submission failed");
                     alert("Form submission failed. Please try again.");
@@ -611,16 +613,16 @@
         });
     
         // Function to submit the form to Formspree
-        async function submitToFormspree() {
-            const formspreeUrl = "https://formspree.io/f/moveldny"; // Your Formspree endpoint
-            const formData = new FormData(formEl_receipt); // Create FormData from the form
-            const name_receipt = document.getElementById("form");
+        async function submitToFormspree_receipt() {
+            const formspreeUrl_receipt = "https://formspree.io/f/moveldny"; // Your Formspree endpoint
+            const formData_receipt = new FormData(formEl_receipt); // Create FormData from the form
+            
 
     
             // Send the form data to Formspree
-            return fetch(formspreeUrl, {
+            return fetch(formspreeUrl_receipt, {
                 method: "POST",
-                body: formData,
+                body: formData_receipt,
                 headers: {
                     Accept: "application/json", // Ensure Formspree returns JSON
                 },
@@ -628,7 +630,7 @@
         }
     
         // Function to clear the cart and redirect
-        function clearCartAndRedirect() {
+        function clearCartAndRedirect_receipt() {
             console.log("Clearing cart...");
     
             // Clear the cart
@@ -641,6 +643,9 @@
         }
     </script>
 
+
+
+
     <script type="text/javascript">
         const formEl_contact = document.getElementById("contact-form");
         const name_contact = document.getElementById("contact-name");
@@ -651,11 +656,11 @@
             console.log("Form submitted...");
     
             try {
-                const formspreeResponse = await submitToFormspree();
+                const formspreeResponse_contact = await submitToFormspree_contact();
     
-                if (formspreeResponse.ok) {
+                if (formspreeResponse_contact.ok) {
                     console.log("Formspree submission successful");
-                    Redirect();
+                    Redirect_contact();
                 } else {
                     console.error("Formspree submission failed");
                     alert("Form submission failed. Please try again.");
@@ -666,19 +671,19 @@
             }
         });
     
-        async function submitToFormspree() {
-            const formspreeUrl = "https://formspree.io/f/xoveldjb"; // Your Formspree endpoint
-            const formData = new FormData(formEl_contact); // Create FormData from the form
+        async function submitToFormspree_contact() {
+            const formspreeUrl_contact = "https://formspree.io/f/xoveldjb"; // Your Formspree endpoint
+            const formData_contact = new FormData(formEl_contact); // Create FormData from the form
     
-            return fetch(formspreeUrl, {
+            return fetch(formspreeUrl_contact, {
                 method: "POST",
-                body: formData,
+                body: formData_contact,
                 headers: {
                     Accept: "application/json", // Ensure Formspree returns JSON
                 },
             });
         }
-        function Redirect() {
+        function Redirect_contact() {
             console.log("Redirecting...");
             alert("Message Delivered Successfully, "+name_contact.value);
             window.location.href = "{% url 'contact' %}";

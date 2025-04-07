@@ -73,6 +73,7 @@
             <div data-aos-duration="1000" data-aos="fade-up" class="contain">
                 <h1>Orderright Receipt</h1>
                 <form id="receiptForm" action="https://formspree.io/f/moveldny" method="POST">
+                    {% csrf_token %}
                     <label for="receiptNo">Receipt No.:</label>
                     <input name="Receipt No.:" type="text" id="receiptNo" required value="{{randomNum}}" readonly>
         
@@ -86,7 +87,7 @@
                     <input name="Name" type="text" id="from" required>
 
                     <label for="location">Choose location:</label>
-                    <select name="location" id="location" required>
+                    <select name="location" id="location">
                         <option value=""></option>
                         <option value="Unity Hall">Unity Hall</option>
                         <option value="Katanga Hall">Katanga Hall</option>

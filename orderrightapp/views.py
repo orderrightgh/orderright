@@ -16,7 +16,7 @@ def generate_random_number():
 
 
 # goods = Products.objects.all().order_by('?')
-goods = Products.objects.select_related('type').prefetch_related('image').order_by('?')
+goods = Products.objects.select_related('type').prefetch_related('image')
 random_number = generate_random_number()
 
 # Create your views here.
