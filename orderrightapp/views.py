@@ -24,8 +24,8 @@ random_number = generate_random_number()
 
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.views.decorators.cache import cache_page
-cache_15min = cache_page(60 * 15)
+# from django.views.decorators.cache import cache_page
+# cache_15min = cache_page(60 * 15)
 
 def shop(request):
     data = cartData(request)
@@ -198,7 +198,7 @@ def accessories(request):
     accessories = []
     packages = []
     
-    for p in goods.order_by('?'):
+    for p in goods:
         if p.type.name == "phone accessories":
 
             accessories.append(p)
@@ -241,7 +241,7 @@ def phones(request):
     phones = []
     packages = []
     
-    for p in goods.order_by('?'):
+    for p in goods:
         if p.type.name == "phones":
 
             phones.append(p)
